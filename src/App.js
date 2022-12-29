@@ -19,8 +19,8 @@ export const DataContext = createContext();
 function App() {
   const [isGraphVisible, setIsGraphVisible] = useState(false);
   const [isTabDisabled, setIsTabDisabled] = useState(true);
-  const [edges, setEdges] = useState([{ Name: "Default", Edges: "0" }]);
-  const [nodes, setNodes] = useState({ Name: "Default", Edges: "0" });
+  const [edgesData, setEdgesData] = useState([{ Name: "Default", Edges: "0" }]);
+  const [nodesData, setNodesData] = useState({ Name: "Default", Edges: "0" });
 
   const [primaryChoice, setPrimaryChoice] = useState({
     value: { Name: "Default", Edges: "0" },
@@ -45,7 +45,7 @@ function App() {
         header: true,
         skipEmptyLines: true,
       }).data;
-      setEdges(parsedEdges);
+      setEdgesData(parsedEdges);
     }
     async function fetchNodes() {
       try {
@@ -67,7 +67,7 @@ function App() {
         players_to_edges[parsedNodes[i].Name] =
           parsedNodes[i].Edges.split(", ").map(Number);
       }
-      setNodes(players_to_edges);
+      setNodesData(players_to_edges);
       // console.log(players_to_edges)
       return;
     }
@@ -81,10 +81,10 @@ function App() {
       <Box>
         <DataContext.Provider
           value={{
-            edges,
-            setEdges,
-            nodes,
-            setNodes,
+            edgesData,
+            setEdgesData,
+            nodesData,
+            setNodesData,
             primaryChoice,
             setPrimaryChoice,
             secondaryChoice,

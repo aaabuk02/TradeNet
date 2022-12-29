@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import CytoscapeComponent from "react-cytoscapejs";
 import { DataContext } from "../../App";
 const Visualize = (props) => {
-  const { primaryChoice, secondaryChoice, edges, nodes } =
+  const { primaryChoice, secondaryChoice, edgesData, nodesData } =
     useContext(DataContext);
   const [reset, setReset] = useState(true);
 
@@ -28,18 +28,18 @@ const Visualize = (props) => {
       console.log(root);
       var neighbor;
       for (var i = 0; i < root.Edges.length; i++) {
-        console.log(edges[root.Edges[i]]);
+        console.log(edgesData[root.Edges[i]]);
         var index = root.Edges[i];
-        if (edges[index].From === root.Name) {
-          neighbor = edges[index].To;
+        if (edgesData[index].From === root.Name) {
+          neighbor = edgesData[index].To;
         } else {
-          neighbor = edges[index].From;
+          neighbor = edgesData[index].From;
         }
         graph.nodes.push({ data: { id: neighbor, label: neighbor } });
         graph.edges.push({ data: { source: root.Name, target: neighbor } });
       }
     } else {
-      console.log(nodes);
+      console.log(nodesData);
       graph.nodes.push({ data: { id: neighbors.Name, label: neighbors.Name } });
       graph.edges.push({ data: { source: root.Name, target: neighbors.Name } });
     }

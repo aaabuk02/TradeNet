@@ -5,8 +5,8 @@ import Select from "react-select";
 
 const Setup = (props) => {
   const {
-    edges,
-    nodes,
+    edgesData,
+    nodesData,
     primaryChoice,
     setPrimaryChoice,
     secondaryChoice,
@@ -20,10 +20,10 @@ const Setup = (props) => {
       return;
     }
     var res = node.value.Edges.map(function (index) {
-      if (edges[index].From === node.value.Name) {
-        return { value: { Name: edges[index].To }, label: edges[index].To };
+      if (edgesData[index].From === node.value.Name) {
+        return { value: { Name: edgesData[index].To }, label: edgesData[index].To };
       } else {
-        return { value: { Name: edges[index].From }, label: edges[index].From };
+        return { value: { Name: edgesData[index].From }, label: edgesData[index].From };
       }
     });
     res.sort((a, b) => (a.value.Name > b.value.Name ? 1 : -1));
@@ -33,8 +33,8 @@ const Setup = (props) => {
 
   function batchPrimaryOptions() {
     var options = [];
-    for (const key of Object.keys(nodes)) {
-      options.push({ value: { Name: key, Edges: nodes[key] }, label: key });
+    for (const key of Object.keys(nodesData)) {
+      options.push({ value: { Name: key, Edges: nodesData[key] }, label: key });
     }
     options.sort((a, b) => (a.value.Name > b.value.Name ? 1 : -1));
     return options;
