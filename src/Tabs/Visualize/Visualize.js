@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
+import cytoscape from "cytoscape";
+import fcose from 'cytoscape-fcose';
 import CytoscapeComponent from "react-cytoscapejs";
 import { DataContext } from "../../App";
+
+cytoscape.use(fcose);
 
 const Visualize = (props) => {
   const { primaryChoice, secondaryChoice, edgesData, nodesData } =
@@ -54,7 +58,7 @@ const Visualize = (props) => {
   }, []);
 
   const layout = {
-    name: "cose",
+    name: "fcose",
     fit: true,
     directed: false,
     padding: 11,

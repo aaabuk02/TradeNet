@@ -4230,6 +4230,13 @@ core-util-is@~1.0.0:
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.3.tgz#a6042d3634c2b27e9328f837b965fac83808db85"
   integrity sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==
 
+cose-base@^2.0.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/cose-base/-/cose-base-2.1.0.tgz#89b2d4a59d7bd0cde3138a4689825f3e8a5abd6a"
+  integrity sha512-HTMm07dhxq1dIPGWwpiVrIk9n+DH7KYmqWA786mLe8jDS+1ZjGtJGIIsJVKoseZXS6/FxiUWCJ2B7XzqUCuhPw==
+  dependencies:
+    layout-base "^2.0.0"
+
 cosmiconfig@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/cosmiconfig/-/cosmiconfig-6.0.0.tgz#da4fee853c52f6b1e6935f41c1a2fc50bd4a9982"
@@ -4467,6 +4474,13 @@ csstype@^3.0.11, csstype@^3.0.2:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.1.1.tgz#841b532c45c758ee546a11d5bd7b7b473c8c30b9"
   integrity sha512-DJR/VvkAvSZW9bTouZue2sSxDwdTN92uHjqeKVm+0dAqdfNykRzQ95tay8aXMBAAPpUiq4Qcug2L7neoRh2Egw==
+
+cytoscape-fcose@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/cytoscape-fcose/-/cytoscape-fcose-2.1.0.tgz#04c3093776ea6b71787009de641607db7d4edf55"
+  integrity sha512-Q3apPl66jf8/2sMsrCjNP247nbDkyIPjA9g5iPMMWNLZgP3/mn9aryF7EFY/oRPEpv7bKJ4jYmCoU5r5/qAc1Q==
+  dependencies:
+    cose-base "^2.0.0"
 
 cytoscape@^3.23.0:
   version "3.23.0"
@@ -7038,6 +7052,11 @@ language-tags@^1.0.5:
   integrity sha512-bSytju1/657hFjgUzPAPqszxH62ouE8nQFoFaVlIQfne4wO/wXC9A4+m8jYve7YBBvi59eq0SUpcshvG8h5Usw==
   dependencies:
     language-subtag-registry "^0.3.20"
+
+layout-base@^2.0.0:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/layout-base/-/layout-base-2.0.1.tgz#d0337913586c90f9c2c075292069f5c2da5dd285"
+  integrity sha512-dp3s92+uNI1hWIpPGH3jK2kxE2lMjdXdr+DH8ynZHpd6PUlH6x6cbuXnoMmiNumznqaNO31xu9e79F0uuZ0JFg==
 
 leven@^3.1.0:
   version "3.1.0"
