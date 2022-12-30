@@ -41,7 +41,7 @@ function App() {
       } catch (error) {
         console.error(error);
       }
-      var parsedEdges = Papa.parse(await response.clone().text(), {
+      let parsedEdges = Papa.parse(await response.clone().text(), {
         header: true,
         skipEmptyLines: true,
       }).data;
@@ -62,8 +62,8 @@ function App() {
       }).data;
       // console.log(parsedNodes)
 
-      var players_to_edges = {};
-      for (var i = 0; i < parsedNodes.length; i++) {
+      let players_to_edges = {};
+      for (let i = 0; i < parsedNodes.length; i++) {
         players_to_edges[parsedNodes[i].Name] =
           parsedNodes[i].Edges.split(", ").map(Number);
       }

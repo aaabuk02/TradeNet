@@ -19,7 +19,7 @@ const Setup = (props) => {
     if (node.value.Name === "Default") {
       return;
     }
-    var res = node.value.Edges.map(function (index) {
+    let res = node.value.Edges.map(function (index) {
       if (edgesData[index].From === node.value.Name) {
         return { value: { Name: edgesData[index].To }, label: edgesData[index].To };
       } else {
@@ -32,7 +32,7 @@ const Setup = (props) => {
   }
 
   function batchPrimaryOptions() {
-    var options = [];
+    let options = [];
     for (const key of Object.keys(nodesData)) {
       options.push({ value: { Name: key, Edges: nodesData[key] }, label: key });
     }
