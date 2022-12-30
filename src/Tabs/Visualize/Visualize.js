@@ -1,81 +1,74 @@
-import React, { useState, useEffect, useContext } from "react";
-import cytoscape from "cytoscape";
-import fcose from 'cytoscape-fcose';
-import CytoscapeComponent from "react-cytoscapejs";
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { DataContext } from "../../App";
+import cytoscape from "cytoscape";
+import fcose from "cytoscape-fcose";
 
-cytoscape.use(fcose);
-
-const Visualize = (props) => {
+const Visualize = () => {
   const { primaryChoice, secondaryChoice, edgesData, nodesData } =
     useContext(DataContext);
   const [reset, setReset] = useState(true);
-  const [graphData, setGraphData] = useState({
-    nodes: [],
-    edges: [],
-  });
+  const [graphData, setGraphData] = useState([{ data: { id: "a" } }]);
+  const cytoRef = useRef(null);
+  cytoscape.use(fcose);
 
   useEffect(() => {
-    function buildGraph(root, neighbors) {
-      // var queue = [];
-      // const visited = new Set();
-      var graph = {
-        nodes: [{ data: { id: root.Name, label: root.Name } }],
-        edges: [],
-      };
+    const buildCyto = (elements) => {
+      let cy = cytoscape({
+        container: cytoRef.current,
+        elements: elements,
+        style: [
+          {
+            selector: "node", // select nodes
+            style: {
+              label: "data(label)", // display the label field as the node label
+            },
+          },
+          {
+            selector: "edge",
+            style: {
+              "curve-style": "bezier",
+            },
+          },
+        ],
+        layout: { name: "fcose" },
+      });
+    };
+    const buildGraph = (root, neighbors) => {
+      let graph = [{ data: { id: root.Name, label: root.Name } }];
+      let queue = [];
+      let visited = new Set();
       if (root.Name === "Default") {
         return graph;
       }
       if (neighbors.Name === "Anybody") {
-        console.log(root);
-        var neighbor;
-        for (var i = 0; i < root.Edges.length; i++) {
+        let neighbor;
+        for (let i = 0; i < root.Edges.length; i++) {
           console.log(edgesData[root.Edges[i]]);
-          var index = root.Edges[i];
+          let index = root.Edges[i];
           if (edgesData[index].From === root.Name) {
             neighbor = edgesData[index].To;
           } else {
             neighbor = edgesData[index].From;
           }
-          graph.nodes.push({ data: { id: neighbor, label: neighbor } });
-          graph.edges.push({ data: { source: root.Name, target: neighbor } });
+          graph.push({ data: { id: neighbor, label: neighbor } });
+          graph.push({ data: { source: root.Name, target: neighbor } });
         }
       } else {
-        console.log(nodesData);
-        graph.nodes.push({
+        graph.push({
           data: { id: neighbors.Name, label: neighbors.Name },
         });
-        graph.edges.push({
+        graph.push({
           data: { source: root.Name, target: neighbors.Name },
         });
       }
-      setGraphData(graph);
-      reset ? setReset(false) : setReset(true);
-      // return graph;
-    }
 
-    buildGraph(primaryChoice.value, secondaryChoice.value);
+      return graph;
+    };
+
+    buildCyto(buildGraph(primaryChoice.value, secondaryChoice.value));
   }, []);
 
-  const layout = {
-    name: "fcose",
-    fit: true,
-    directed: false,
-    padding: 11,
-    avoidOverlap: true,
-    nodeDimensionsIncludeLabels: false,
-  };
-
-  return (
-    <div>
-      <CytoscapeComponent
-        key={reset}
-        elements={CytoscapeComponent.normalizeElements(graphData)}
-        style={{ height: "94vh" }}
-        layout={layout}
-      />
-    </div>
-  );
+  return <div ref={cytoRef} style={{ height: "94vh" }}></div>;
 };
 
 export default React.memo(Visualize);
