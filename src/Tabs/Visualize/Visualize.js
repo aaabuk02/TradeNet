@@ -30,38 +30,59 @@ const Visualize = () => {
             },
           },
         ],
-        layout: { name: "fcose" },
+        layout: {
+          name: "fcose",
+          fit: true,
+          directed: false,
+          avoidOverlap: true,
+        },
       });
     };
     const buildGraph = (root, neighbors) => {
       let graph = [{ data: { id: root.Name, label: root.Name } }];
       let queue = [];
-      let visited = new Set();
+      let nodesVisited = new Set();
+      let edgesVisited = new Set();
       if (root.Name === "Default") {
         return graph;
       }
+      //Add root to queue, add root to visited,
       if (neighbors.Name === "Anybody") {
-        let neighbor;
-        for (let i = 0; i < root.Edges.length; i++) {
-          console.log(edgesData[root.Edges[i]]);
-          let index = root.Edges[i];
-          if (edgesData[index].From === root.Name) {
+        queue.push(root.Name);
+        nodesVisited.add(root.Name);
+      } else {
+        //neighbor to queue and nodesVisited, root to nodesVisited
+        queue.push(neighbors.Name);
+        nodesVisited.add(neighbors.Name);
+        nodesVisited.add(root.Name);
+        graph.push({
+          data: { id: neighbors.Name, label: neighbors.Name },
+        });
+      }
+      while (queue.length > 0) {
+        let currNode = queue.shift();
+        for (let i = 0; i < nodesData[currNode].length; i++) {
+          let index = nodesData[currNode][i];
+          let neighbor;
+          if (edgesData[index].From === currNode) {
             neighbor = edgesData[index].To;
           } else {
             neighbor = edgesData[index].From;
           }
-          graph.push({ data: { id: neighbor, label: neighbor } });
-          graph.push({ data: { source: root.Name, target: neighbor } });
+          if (!nodesVisited.has(neighbor)) {
+            nodesVisited.add(neighbor);
+            graph.push({ data: { id: neighbor, label: neighbor } });
+            queue.push(neighbor);
+          }
+          let currEdge = edgesData[index].Key;
+          if (!edgesVisited.has(currEdge)) {
+            edgesVisited.add(currEdge);
+            graph.push({
+              data: { source: currNode, target: neighbor, id: currEdge },
+            });
+          }
         }
-      } else {
-        graph.push({
-          data: { id: neighbors.Name, label: neighbors.Name },
-        });
-        graph.push({
-          data: { source: root.Name, target: neighbors.Name },
-        });
       }
-
       return graph;
     };
 
