@@ -1,19 +1,19 @@
-import React, { useState, useEffect, useContext, useRef } from "react";
+import React, {useEffect, useContext, useRef } from "react";
 import { DataContext } from "../../App";
 import cytoscape from "cytoscape";
 import fcose from "cytoscape-fcose";
 
 const Visualize = () => {
-  const { primaryChoice, secondaryChoice, edgesData, nodesData } =
+  const { primaryChoice, secondaryChoice, edgesData, nodesData, sliderValue } =
     useContext(DataContext);
-  const [reset, setReset] = useState(true);
-  const [graphData, setGraphData] = useState([{ data: { id: "a" } }]);
+  // const [reset, setReset] = useState(true);
+  // const [graphData, setGraphData] = useState([{ data: { id: "a" } }]);
   const cytoRef = useRef(null);
   cytoscape.use(fcose);
 
   useEffect(() => {
     const buildCyto = (elements) => {
-      let cy = cytoscape({
+       cytoscape({
         container: cytoRef.current,
         elements: elements,
         style: [
@@ -59,7 +59,9 @@ const Visualize = () => {
           data: { id: neighbors.Name, label: neighbors.Name },
         });
       }
-      while (queue.length > 0) {
+
+      let layers = 0;
+      while (queue.length > 0 && layers <= sliderValue) {
         let currNode = queue.shift();
         for (let i = 0; i < nodesData[currNode].length; i++) {
           let index = nodesData[currNode][i];
@@ -82,12 +84,16 @@ const Visualize = () => {
             });
           }
         }
+        layers += 1;
       }
       return graph;
     };
 
     buildCyto(buildGraph(primaryChoice.value, secondaryChoice.value));
-  }, []);
+  }, [
+    edgesData,
+    nodesData,
+  ]);
 
   return <div ref={cytoRef} style={{ height: "94vh" }}></div>;
 };

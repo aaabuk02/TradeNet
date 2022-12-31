@@ -21,6 +21,7 @@ function App() {
   const [isTabDisabled, setIsTabDisabled] = useState(true);
   const [edgesData, setEdgesData] = useState([{ Name: "Default", Edges: "0" }]);
   const [nodesData, setNodesData] = useState({ Name: "Default", Edges: "0" });
+  const [sliderValue, setSliderValue] = useState(0);
 
   const [primaryChoice, setPrimaryChoice] = useState({
     value: { Name: "Default", Edges: "0" },
@@ -93,6 +94,8 @@ function App() {
             setIsTabDisabled,
             isGraphVisible,
             setIsGraphVisible,
+            sliderValue, 
+            setSliderValue,
           }}
         >
           <Tabs colorScheme="orange" size="md" pt="1rem">
