@@ -1,4 +1,6 @@
-import React, {useEffect, useContext, useRef } from "react";
+import React, { useEffect, useContext, useRef } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { DataContext } from "../../App";
 import cytoscape from "cytoscape";
 import fcose from "cytoscape-fcose";
@@ -13,7 +15,7 @@ const Visualize = () => {
 
   useEffect(() => {
     const buildCyto = (elements) => {
-       cytoscape({
+      let cy = cytoscape({
         container: cytoRef.current,
         elements: elements,
         style: [
@@ -36,6 +38,14 @@ const Visualize = () => {
           directed: false,
           avoidOverlap: true,
         },
+      });
+      cy.on("tap", "edge", (event) => {
+        toast(event.target.data('label'), {
+          position: "bottom-left",
+          autoClose: 3000,
+          hideProgressBar: true,
+          zfIndex: 3,
+        });
       });
     };
     const buildGraph = (root, neighbors) => {
@@ -76,11 +86,16 @@ const Visualize = () => {
             graph.push({ data: { id: neighbor, label: neighbor } });
             queue.push(neighbor);
           }
-          let currEdge = edgesData[index].Key;
+          let currEdge = edgesData[index];
           if (!edgesVisited.has(currEdge)) {
             edgesVisited.add(currEdge);
             graph.push({
-              data: { source: currNode, target: neighbor, id: currEdge },
+              data: {
+                source: currNode,
+                target: neighbor,
+                id: currEdge.Key,
+                label: currEdge.Label
+              },
             });
           }
         }
@@ -90,12 +105,13 @@ const Visualize = () => {
     };
 
     buildCyto(buildGraph(primaryChoice.value, secondaryChoice.value));
-  }, [
-    edgesData,
-    nodesData,
-  ]);
+  }, [edgesData, nodesData]);
 
-  return <div ref={cytoRef} style={{ height: "94vh" }}></div>;
+  return (
+    <div>
+      <div ref={cytoRef} style={{ height: "94vh" }}></div> <ToastContainer limit={3}/>
+    </div>
+  );
 };
 
 export default React.memo(Visualize);
