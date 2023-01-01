@@ -198,7 +198,7 @@ Key,Date,From,To,Label,Teams Involved,Player Trade,Rights/Pick Trade
 2022-01-03_Cavaliers_Knicks_Lakers=Brad Newley+Louis Labeyrie,2022-01-03,Brad Newley,Louis Labeyrie,Knicks Aquire: Rights to Brad Newley | Lakers Aquire: Rights to Louis Labeyrie,"['Lakers', 'Cavaliers', 'Knicks']",False,True
 2022-01-03_Cavaliers_Knicks_Lakers=Louis Labeyrie+Rajon Rondo,2022-01-03,Louis Labeyrie,Rajon Rondo,Lakers Aquire: Rights to Louis Labeyrie | Cavaliers Aquire: Rajon Rondo,"['Lakers', 'Cavaliers', 'Knicks']",True,True
 2022-01-10_Nuggets_Pistons=Bol Bol+Rodney McGruder,2022-01-10,Rodney McGruder,Bol Bol,Nuggets Aquire: Rodney McGruder | Pistons Aquire: Bol Bol,"['Nuggets', 'Pistons']",True,False
-2022-01-13_None_None=Bol Bol+Rodney McGruder,2022-01-13,Bol Bol,Rodney McGruder,None Aquire: Bol Bol | None Aquire: Rodney McGruder,"['None', 'None']",True,False
+2022-01-13_Nuggets_Pistons=Bol Bol+Rodney McGruder,2022-01-13,Bol Bol,Rodney McGruder,Nuggets Aquire: Bol Bol | Pistons Aquire: Rodney McGruder,"['Nuggets', 'Pistons']",True,False
 2022-01-13_Hawks_Knicks=Cam Reddish+Kevin Knox II,2022-01-13,Kevin Knox II,Cam Reddish,Hawks Aquire: Kevin Knox II | Knicks Aquire: Cam Reddish,"['Hawks', 'Knicks']",True,False
 2022-01-13_Hawks_Knicks=Kevin Knox II+Solomon Hill,2022-01-13,Kevin Knox II,Solomon Hill,Hawks Aquire: Kevin Knox II | Knicks Aquire: Solomon Hill,"['Hawks', 'Knicks']",True,False
 2022-01-19_Celtics_Nuggets_Spurs=Bol Bol+Juan Hernangomez,2022-01-19,Bol Bol,Juan Hernangomez,Celtics Aquire: Bol Bol | Unknown Aquire: Juan Hernangomez,"['Spurs', 'Celtics', 'Nuggets']",True,False
