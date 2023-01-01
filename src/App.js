@@ -114,10 +114,10 @@ function App() {
               </Tab>
             </TabList>
             <TabPanels>
-              <TabPanel>
+              <TabPanel p={"2rem"}>
                 <About />
               </TabPanel>
-              <TabPanel>
+              <TabPanel p={"2rem"}>
                 <Setup />
               </TabPanel>
               <TabPanel p={0}>{isGraphVisible && <Visualize />}</TabPanel>

@@ -6,10 +6,13 @@ import {
   SliderFilledTrack,
   SliderThumb,
   Box,
+  Grid,
+  GridItem,
 } from "@chakra-ui/react";
-import { useContext, useRef} from "react";
+import { useContext, useRef } from "react";
 import { DataContext } from "../../App";
 import Select from "react-select";
+import "./Setup.scss";
 
 const Setup = (props) => {
   const {
@@ -71,21 +74,30 @@ const Setup = (props) => {
   }
 
   return (
-    <div>
-      <div>
-        <Text fontSize="2xl" as="b" pl=".5rem" pr=".5rem" color="orange">
+    <Grid templateColumns="1fr" gap={6} maxWidth="35rem">
+      <GridItem>
+        <Text fontSize="2xl" as="b" color="orange">
           Show trades for:
         </Text>
-        <Select options={batchPrimaryOptions()} onChange={primaryCalls} />
-        <Text fontSize="2xl" as="b" pl=".5rem" pr=".5rem" color="orange">
+        <Select
+          options={batchPrimaryOptions()}
+          onChange={primaryCalls}
+          className="primary-select"
+        />
+      </GridItem>
+      <GridItem>
+        <Text fontSize="2xl" as="b" color="orange">
           Linked with:
         </Text>
         <Select
           ref={secondarySelectRef}
           options={getRelatedNodes(primaryChoice)}
           onChange={(secondaryChoice) => setSecondaryChoice(secondaryChoice)}
+          className="secondary-select"
         />
-        <Text fontSize="2xl" as="b" pl=".5rem" pr=".5rem" color="orange">
+      </GridItem>
+      <GridItem>
+        <Text fontSize="2xl" as="b" color="orange">
           Additional Exchanges: {sliderValue}
         </Text>
         <Box pt={6} pb={2}>
@@ -102,9 +114,11 @@ const Setup = (props) => {
             <SliderThumb boxSize={6} />
           </Slider>
         </Box>
+      </GridItem>
+      <GridItem>
         <Button onClick={() => buildGraph()}>Build Graph</Button>
-      </div>
-    </div>
+      </GridItem>
+    </Grid>
   );
 };
 

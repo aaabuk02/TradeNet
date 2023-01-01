@@ -1,6 +1,7 @@
 import React, { useEffect, useContext, useRef } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "./Visualize.scss"
 import { DataContext } from "../../App";
 import cytoscape from "cytoscape";
 import fcose from "cytoscape-fcose";
@@ -22,13 +23,25 @@ const Visualize = () => {
           {
             selector: "node", // select nodes
             style: {
-              label: "data(label)", // display the label field as the node label
+              'label': "data(label)", // display the label field as the node label
+              'text-wrap': 'wrap',
+              'text-valign': 'center',
+              'font-size': 10,
+              'background-color': 'rgb(255, 95, 31)',
+              'color' : 'rgb(0, 0, 0)',
+              'text-outline-color': 'rgb(255, 95, 31)',
+              'text-outline-width': 2,
+              'width': 35,
+              'height': 35,
             },
           },
           {
             selector: "edge",
             style: {
               "curve-style": "bezier",
+              'opacity': 0.55,
+              // 'lineColor' : 'rgb(245, 85, 21)',
+
             },
           },
         ],
@@ -42,14 +55,14 @@ const Visualize = () => {
       cy.on("tap", "edge", (event) => {
         toast(event.target.data('label'), {
           position: "bottom-left",
-          autoClose: 3000,
+          autoClose: 5000,
           hideProgressBar: true,
           zfIndex: 3,
         });
       });
     };
     const buildGraph = (root, neighbors) => {
-      let graph = [{ data: { id: root.Name, label: root.Name } }];
+      let graph = [{ data: { id: root.Name, label: root.Name.split(' ').join('\n') } }];
       let queue = [];
       let nodesVisited = new Set();
       let edgesVisited = new Set();
@@ -66,7 +79,7 @@ const Visualize = () => {
         nodesVisited.add(neighbors.Name);
         nodesVisited.add(root.Name);
         graph.push({
-          data: { id: neighbors.Name, label: neighbors.Name },
+          data: { id: neighbors.Name, label: neighbors.Name.split(' ').join('\n') },
         });
       }
 
@@ -83,7 +96,7 @@ const Visualize = () => {
           }
           if (!nodesVisited.has(neighbor)) {
             nodesVisited.add(neighbor);
-            graph.push({ data: { id: neighbor, label: neighbor } });
+            graph.push({ data: { id: neighbor, label: neighbor.split(' ').join('\n') } });
             queue.push(neighbor);
           }
           let currEdge = edgesData[index];
@@ -94,7 +107,7 @@ const Visualize = () => {
                 source: currNode,
                 target: neighbor,
                 id: currEdge.Key,
-                label: currEdge.Label
+                label: "On " + currEdge.Date + ": " + currEdge.Label
               },
             });
           }
@@ -109,7 +122,7 @@ const Visualize = () => {
 
   return (
     <div>
-      <div ref={cytoRef} style={{ height: "94vh" }}></div> <ToastContainer limit={3}/>
+      <div ref={cytoRef} className="graph"></div> <ToastContainer limit={3}/>
     </div>
   );
 };
