@@ -19,7 +19,7 @@ const About = () => {
             simply select a player and (optionally) another player who has been
             involved in a trade with them. You can also specify the number of
             additional exchanges to include in the graph, allowing you to
-            control its size and complexity
+            control its size and complexity.
           </Text>
         </GridItem>
         <GridItem>
@@ -28,7 +28,7 @@ const About = () => {
             <Link href="https://prosportstransactions.com/" isExternal>
               prosportstransactions.com <ExternalLinkIcon mx="2px" />
             </Link>
-            {" "}and is currently using data from 2021
+            {" "}and is currently using data from 2021 as it is still in development.
           </Text>
         </GridItem>
         <GridItem>
