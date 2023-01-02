@@ -118,7 +118,7 @@ const Visualize = () => {
     };
 
     buildCyto(buildGraph(primaryChoice.value, secondaryChoice.value));
-  }, [edgesData, nodesData]);
+  });
 
   return (
     <div>
