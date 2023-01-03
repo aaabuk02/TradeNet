@@ -66,7 +66,7 @@ const Visualize = () => {
       let queue = [];
       let nodesVisited = new Set();
       let edgesVisited = new Set();
-      if (root.Name === "Default") {
+      if (root.Name === "TradeNet") {
         return graph;
       }
       //Add root to queue, add root to visited,

@@ -18,14 +18,13 @@ export const DataContext = createContext();
 
 function App() {
   const [isGraphVisible, setIsGraphVisible] = useState(false);
-  const [isTabDisabled, setIsTabDisabled] = useState(true);
-  const [edgesData, setEdgesData] = useState([{ Name: "Default", Edges: "0" }]);
-  const [nodesData, setNodesData] = useState({ Name: "Default", Edges: "0" });
+  const [edgesData, setEdgesData] = useState([{ Name: "TradeNet", Edges: "0" }]);
+  const [nodesData, setNodesData] = useState({ Name: "TradeNet", Edges: "0" });
   const [sliderValue, setSliderValue] = useState(0);
 
   const [primaryChoice, setPrimaryChoice] = useState({
-    value: { Name: "Default", Edges: "0" },
-    label: "Default",
+    value: { Name: "TradeNet", Edges: "0" },
+    label: "TradeNet",
   });
   const [secondaryChoice, setSecondaryChoice] = useState({
     value: { Name: "Anybody", Edges: "0" },
@@ -81,21 +80,7 @@ function App() {
     <ChakraProvider>
       <Box>
         <DataContext.Provider
-          value={{
-            edgesData,
-            setEdgesData,
-            nodesData,
-            setNodesData,
-            primaryChoice,
-            setPrimaryChoice,
-            secondaryChoice,
-            setSecondaryChoice,
-            isTabDisabled,
-            setIsTabDisabled,
-            isGraphVisible,
-            setIsGraphVisible,
-            sliderValue, 
-            setSliderValue,
+          value={{edgesData,setEdgesData,nodesData,setNodesData,primaryChoice,setPrimaryChoice,secondaryChoice,setSecondaryChoice,isGraphVisible,setIsGraphVisible,sliderValue,setSliderValue,
           }}
         >
           <Tabs colorScheme="orange" size="md" pt="1rem">
@@ -104,9 +89,8 @@ function App() {
                 TradeNet
               </Text>
               <Tab as="b">About</Tab>
-              <Tab as="b">Setup</Tab>
+              <Tab as="b" onClick={() => setIsGraphVisible(false)}>Setup</Tab>
               <Tab
-                isDisabled={isTabDisabled}
                 as="b"
                 onClick={() => setIsGraphVisible(true)}
               >

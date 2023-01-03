@@ -1,6 +1,5 @@
 import {
   Text,
-  Button,
   Slider,
   SliderTrack,
   SliderFilledTrack,
@@ -21,14 +20,12 @@ const Setup = (props) => {
     primaryChoice,
     setPrimaryChoice,
     setSecondaryChoice,
-    setIsTabDisabled,
-    setIsGraphVisible,
     sliderValue,
     setSliderValue,
   } = useContext(DataContext);
 
   function getRelatedNodes(node) {
-    if (node.value.Name === "Default") {
+    if (node.value.Name === "TradeNet") {
       return;
     }
     let res = node.value.Edges.map(function (index) {
@@ -67,11 +64,6 @@ const Setup = (props) => {
     });
     return setPrimaryChoice(primaryChoice);
   };
-
-  function buildGraph() {
-    setIsTabDisabled(false);
-    setIsGraphVisible(false);
-  }
 
   return (
     <Grid templateColumns="1fr" gap={6} maxWidth="35rem">
@@ -114,9 +106,6 @@ const Setup = (props) => {
             <SliderThumb boxSize={6} />
           </Slider>
         </Box>
-      </GridItem>
-      <GridItem>
-        <Button onClick={() => buildGraph()}>Build Graph</Button>
       </GridItem>
     </Grid>
   );
