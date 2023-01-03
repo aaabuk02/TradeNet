@@ -11,16 +11,20 @@ import {
 import About from "./Tabs/About/About";
 import Setup from "./Tabs/Setup/Setup";
 import Visualize from "./Tabs/Visualize/Visualize";
-import React, { useState, createContext, useEffect } from "react";
+import React, { useState, createContext, useEffect, Suspense } from "react";
 import Papa from "papaparse";
 
 export const DataContext = createContext();
 
 function App() {
   const [isGraphVisible, setIsGraphVisible] = useState(false);
-  const [edgesData, setEdgesData] = useState([{ Name: "TradeNet", Edges: "0" }]);
-  const [nodesData, setNodesData] = useState({ Name: "TradeNet", Edges: "0" });
-  const [sliderValue, setSliderValue] = useState(0);
+  
+  const [edgesData, setEdgesData] = useState([
+    { Name: "TradeNet", Edges: "0" },
+  ]);
+  const [nodesData, setNodesData] = useState([
+    { Name: "TradeNet", Edges: "0" },
+  ]);
 
   const [primaryChoice, setPrimaryChoice] = useState({
     value: { Name: "TradeNet", Edges: "0" },
@@ -30,6 +34,7 @@ function App() {
     value: { Name: "Anybody", Edges: "0" },
     label: "Anybody",
   });
+  const [sliderValue, setSliderValue] = useState(0);
 
   useEffect(() => {
     let response;
@@ -60,7 +65,6 @@ function App() {
         header: true,
         skipEmptyLines: true,
       }).data;
-      // console.log(parsedNodes)
 
       let players_to_edges = {};
       for (let i = 0; i < parsedNodes.length; i++) {
@@ -68,7 +72,6 @@ function App() {
           parsedNodes[i].Edges.split(", ").map(Number);
       }
       setNodesData(players_to_edges);
-      // console.log(players_to_edges)
       return;
     }
 
@@ -80,33 +83,52 @@ function App() {
     <ChakraProvider>
       <Box>
         <DataContext.Provider
-          value={{edgesData,setEdgesData,nodesData,setNodesData,primaryChoice,setPrimaryChoice,secondaryChoice,setSecondaryChoice,isGraphVisible,setIsGraphVisible,sliderValue,setSliderValue,
+          value={{
+            edgesData,
+            setEdgesData,
+            nodesData,
+            setNodesData,
+            primaryChoice,
+            setPrimaryChoice,
+            secondaryChoice,
+            setSecondaryChoice,
+            isGraphVisible,
+            setIsGraphVisible,
+            sliderValue,
+            setSliderValue,
           }}
         >
-          <Tabs colorScheme="orange" size="md" pt="1rem">
-            <TabList>
-              <Text fontSize="2xl" as="b" pl=".5rem" pr=".5rem" color="orange">
-                TradeNet
-              </Text>
-              <Tab as="b">About</Tab>
-              <Tab as="b" onClick={() => setIsGraphVisible(false)}>Setup</Tab>
-              <Tab
-                as="b"
-                onClick={() => setIsGraphVisible(true)}
-              >
-                Visualize
-              </Tab>
-            </TabList>
-            <TabPanels>
-              <TabPanel p={"2rem"}>
-                <About />
-              </TabPanel>
-              <TabPanel p={"2rem"}>
-                <Setup />
-              </TabPanel>
-              <TabPanel p={0}>{isGraphVisible && <Visualize />}</TabPanel>
-            </TabPanels>
-          </Tabs>
+          <Suspense fallback={<div>Loading...</div>}>
+            <Tabs colorScheme="orange" size="md" pt="1rem">
+              <TabList>
+                <Text
+                  fontSize="2xl"
+                  as="b"
+                  pl=".5rem"
+                  pr=".5rem"
+                  color="orange"
+                >
+                  TradeNet
+                </Text>
+                <Tab as="b">About</Tab>
+                <Tab as="b" onClick={() => setIsGraphVisible(false)}>
+                  Setup
+                </Tab>
+                <Tab as="b" onClick={() => setIsGraphVisible(true)}>
+                  Visualize
+                </Tab>
+              </TabList>
+              <TabPanels>
+                <TabPanel p={"2rem"}>
+                  <About />
+                </TabPanel>
+                <TabPanel p={"2rem"}>
+                  <Setup />
+                </TabPanel>
+                <TabPanel p={0}>{isGraphVisible && <Visualize />}</TabPanel>
+              </TabPanels>
+            </Tabs>
+          </Suspense>
         </DataContext.Provider>
       </Box>
     </ChakraProvider>
