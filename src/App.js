@@ -19,6 +19,7 @@ export const DataContext = createContext();
 function App() {
   const [isGraphVisible, setIsGraphVisible] = useState(false);
   
+  const [tradesData, setTradesData] = useState();
   const [edgesData, setEdgesData] = useState([
     { Name: "TradeNet", Edges: "0" },
   ]);
@@ -38,6 +39,35 @@ function App() {
 
   useEffect(() => {
     let response;
+    async function fetchTrades() {
+      try {
+        response = await fetch(
+          "https://raw.githubusercontent.com/aaabuk02/trade-net/master/scrape/trades.csv"
+        );
+      } catch (error) {
+        console.error(error);
+      }
+      let parsedTrades = Papa.parse(await response.clone().text(), {
+        header: true,
+        skipEmptyLines: true,
+      }).data;
+      let key_to_trade = {};
+      let key;
+      for (let i = 0; i < parsedTrades.length; i++) {
+        key = parsedTrades[i][0];
+        let trades = [];
+        let j = 1;
+        let curr = parsedTrades[i][j];
+        while (curr){
+          trades.push(curr);
+          j += 1;
+          curr = parsedTrades[i][j];
+        }
+        key_to_trade[key] = trades;
+      }
+      setTradesData(key_to_trade);
+      console.log(key_to_trade);
+    }
     async function fetchEdges() {
       try {
         response = await fetch(
@@ -74,7 +104,7 @@ function App() {
       setNodesData(players_to_edges);
       return;
     }
-
+    fetchTrades();
     fetchEdges();
     fetchNodes();
   }, []);
@@ -84,6 +114,8 @@ function App() {
       <Box>
         <DataContext.Provider
           value={{
+            tradesData,
+            setTradesData,
             edgesData,
             setEdgesData,
             nodesData,
