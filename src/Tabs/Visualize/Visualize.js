@@ -1,18 +1,37 @@
 import React, { useEffect, useContext, useRef } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import "./Visualize.scss"
+import {
+  Box,
+  Drawer,
+  DrawerBody,
+  DrawerHeader,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
+  Text,
+  List,
+  ListItem,
+  UnorderedList,
+} from "@chakra-ui/react";
+import "./Visualize.scss";
 import { DataContext } from "../../App";
 import cytoscape from "cytoscape";
-import fcose from "cytoscape-fcose";
+import klay from "cytoscape-klay";
 
 const Visualize = () => {
-  const { primaryChoice, secondaryChoice, edgesData, nodesData, sliderValue } =
-    useContext(DataContext);
-  // const [reset, setReset] = useState(true);
-  // const [graphData, setGraphData] = useState([{ data: { id: "a" } }]);
+  const {
+    primaryChoice,
+    secondaryChoice,
+    tradesData,
+    edgesData,
+    nodesData,
+    sliderValue,
+  } = useContext(DataContext);
+
+  let tradeDetailsMap = new Map();
+
   const cytoRef = useRef(null);
-  cytoscape.use(fcose);
+  const drawerRef = useRef(null);
+  cytoscape.use(klay);
 
   useEffect(() => {
     const buildCyto = (elements) => {
@@ -23,46 +42,46 @@ const Visualize = () => {
           {
             selector: "node", // select nodes
             style: {
-              'label': "data(label)", // display the label field as the node label
-              'text-wrap': 'wrap',
-              'text-valign': 'center',
-              'font-size': 10,
-              'background-color': 'rgb(255, 95, 31)',
-              'color' : 'rgb(0, 0, 0)',
-              'text-outline-color': 'rgb(255, 95, 31)',
-              'text-outline-width': 2,
-              'width': 35,
-              'height': 35,
+              label: "data(label)", // display the label field as the node label
+              "text-wrap": "wrap",
+              "text-valign": "center",
+              "font-size": 10,
+              "background-color": "rgb(255, 95, 31)",
+              color: "rgb(0, 0, 0)",
+              "text-outline-color": "rgb(255, 95, 31)",
+              "text-outline-width": 2,
+              width: 35,
+              height: 35,
             },
           },
           {
             selector: "edge",
             style: {
               "curve-style": "bezier",
-              'opacity': 0.55,
-              // 'lineColor' : 'rgb(245, 85, 21)',
-
+              opacity: 0.45,
+              lineColor: "rgb(31, 81, 255)",
             },
           },
         ],
         layout: {
-          name: "fcose",
+          name: "klay",
           fit: true,
           directed: false,
           avoidOverlap: true,
         },
       });
       cy.on("tap", "edge", (event) => {
-        toast(event.target.data('label'), {
-          position: "bottom-left",
-          autoClose: 5000,
-          hideProgressBar: true,
-          zfIndex: 3,
-        });
+        let key = event.target.data("id");
+        key = key.substring(0, key.indexOf("="));
+        drawerRef.current.openDrawer();
+        drawerRef.current.setBody(key);
       });
     };
+
     const buildGraph = (root, neighbors) => {
-      let graph = [{ data: { id: root.Name, label: root.Name.split(' ').join('\n') } }];
+      let graph = [
+        { data: { id: root.Name, label: root.Name.split(" ").join("\n") } },
+      ];
       let queue = [];
       let nodesVisited = new Set();
       let edgesVisited = new Set();
@@ -79,7 +98,10 @@ const Visualize = () => {
         nodesVisited.add(neighbors.Name);
         nodesVisited.add(root.Name);
         graph.push({
-          data: { id: neighbors.Name, label: neighbors.Name.split(' ').join('\n') },
+          data: {
+            id: neighbors.Name,
+            label: neighbors.Name.split(" ").join("\n"),
+          },
         });
       }
 
@@ -96,7 +118,9 @@ const Visualize = () => {
           }
           if (!nodesVisited.has(neighbor)) {
             nodesVisited.add(neighbor);
-            graph.push({ data: { id: neighbor, label: neighbor.split(' ').join('\n') } });
+            graph.push({
+              data: { id: neighbor, label: neighbor.split(" ").join("\n") },
+            });
             queue.push(neighbor);
           }
           let currEdge = edgesData[index];
@@ -107,7 +131,7 @@ const Visualize = () => {
                 source: currNode,
                 target: neighbor,
                 id: currEdge.Key,
-                label: "On " + currEdge.Date + ": " + currEdge.Label
+                label: "On " + currEdge.Date + ": " + currEdge.Label,
               },
             });
           }
@@ -117,14 +141,102 @@ const Visualize = () => {
       return graph;
     };
 
+    if (primaryChoice.value.Edges === "0") {
+      return;
+    }
+
     buildCyto(buildGraph(primaryChoice.value, secondaryChoice.value));
   });
 
+  //Need to use class component for drawer as using hooks would cause the graph to re-render every time you open it.
+  class MyDrawer extends React.Component {
+    state = {
+      isOpen: false,
+      currentBody: <Text>Body</Text>,
+    };
+
+    openDrawer = () => {
+      this.setState({ isOpen: true });
+    };
+
+    closeDrawer = () => {
+      this.setState({ isOpen: false });
+    };
+
+    setBody = (key) => {
+      if (tradeDetailsMap.has(key)) {
+        this.setState({ currentBody: tradeDetailsMap.get(key) });
+        return;
+      }
+
+      let data = tradesData[key].map((res) => res.split(";"));
+      const map = data.map((array, index) => {
+        let heading = array.shift();
+        return (
+          <ListItem key={index}>
+            <UnorderedList>
+              <Text as="b" fontSize="xl">
+                {heading}
+              </Text>
+              {array.map((contents, index) => {
+                return (
+                  <ListItem key={index} ml="1rem">
+                    <Text key={index}>
+                      {}
+                      {contents}
+                    </Text>
+                  </ListItem>
+                );
+              })}
+            </UnorderedList>
+          </ListItem>
+        );
+      });
+      tradeDetailsMap.set(
+        key,
+        <Box pb="1.5rem">
+          <Text as="b" fontSize="xl">
+            On {key.slice(0, key.indexOf("_"))}
+          </Text>
+          <List spacing={"1rem"} pt="1.5rem">
+            {map}
+          </List>
+        </Box>
+      );
+      this.setState({ currentBody: tradeDetailsMap.get(key) });
+      return;
+    };
+
+    render() {
+      return (
+        <>
+          <Drawer
+            isOpen={this.state.isOpen}
+            onClose={this.closeDrawer}
+            placement="right"
+            size="xs"
+            variant="aside"
+            trapFocus={false}
+            blockScrollOnMount={false}
+          >
+            <DrawerOverlay />
+            <DrawerContent>
+              <DrawerHeader>Trade Details</DrawerHeader>
+              <DrawerCloseButton />
+              <DrawerBody>{this.state.currentBody}</DrawerBody>
+            </DrawerContent>
+          </Drawer>
+        </>
+      );
+    }
+  }
+
   return (
     <div>
-      <div ref={cytoRef} className="graph"></div> <ToastContainer limit={3}/>
+      <div ref={cytoRef} className="graph"></div>
+      <MyDrawer ref={drawerRef} />
     </div>
   );
 };
 
-export default React.memo(Visualize);
+export default Visualize;
