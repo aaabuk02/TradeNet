@@ -100,10 +100,10 @@ const Setup = (props) => {
             step={1}
             onChange={(val) => setSliderValue(val)}
           >
-            <SliderTrack bg="orange.100">
+            <SliderTrack>
               <SliderFilledTrack bg="orange" />
             </SliderTrack>
-            <SliderThumb boxSize={6} />
+            <SliderThumb bg="orange" boxSize={6} />
           </Slider>
         </Box>
       </GridItem>

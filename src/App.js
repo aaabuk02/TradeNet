@@ -18,7 +18,7 @@ export const DataContext = createContext();
 
 function App() {
   const [isGraphVisible, setIsGraphVisible] = useState(false);
-  
+
   const [tradesData, setTradesData] = useState();
   const [edgesData, setEdgesData] = useState([
     { Name: "TradeNet", Edges: "0" },
@@ -58,7 +58,7 @@ function App() {
         let trades = [];
         let j = 1;
         let curr = parsedTrades[i][j];
-        while (curr){
+        while (curr) {
           trades.push(curr);
           j += 1;
           curr = parsedTrades[i][j];
@@ -66,7 +66,6 @@ function App() {
         key_to_trade[key] = trades;
       }
       setTradesData(key_to_trade);
-      console.log(key_to_trade);
     }
     async function fetchEdges() {
       try {
