@@ -7,6 +7,8 @@ import {
   TabPanel,
   TabPanels,
   Box,
+  Spinner,
+  Flex,
 } from "@chakra-ui/react";
 import About from "./Tabs/About/About";
 import Setup from "./Tabs/Setup/Setup";
@@ -17,8 +19,6 @@ export const DataContext = createContext();
 
 function App() {
   const Visualize = React.lazy(() => import("./Tabs/Visualize/Visualize"));
-
-  const [isGraphVisible, setIsGraphVisible] = useState(false);
 
   const [tradesData, setTradesData] = useState();
   const [edgesData, setEdgesData] = useState([
@@ -124,8 +124,6 @@ function App() {
             setPrimaryChoice,
             secondaryChoice,
             setSecondaryChoice,
-            isGraphVisible,
-            setIsGraphVisible,
             sliderValue,
             setSliderValue,
           }}
@@ -136,10 +134,10 @@ function App() {
                 TradeNet
               </Text>
               <Tab as="b">About</Tab>
-              <Tab as="b" onClick={() => setIsGraphVisible(false)}>
+              <Tab as="b">
                 Setup
               </Tab>
-              <Tab as="b" onClick={() => setIsGraphVisible(true)}>
+              <Tab as="b">
                 Visualize
               </Tab>
             </TabList>
@@ -150,8 +148,14 @@ function App() {
               <TabPanel p={"2rem"}>
                 <Setup />
               </TabPanel>
-              <Suspense fallback={<div>Loading...</div>}>
-                <TabPanel p={0}>{isGraphVisible && <Visualize />}</TabPanel>
+              <Suspense
+                fallback={
+                  <Flex alignContent={"center"} justifyContent={"center"} m ={"10rem"}>
+                    <Spinner color="orange.500" />
+                  </Flex>
+                }
+              >
+                <TabPanel p={0}>{<Visualize />}</TabPanel>
               </Suspense>
             </TabPanels>
           </Tabs>
