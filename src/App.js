@@ -10,13 +10,14 @@ import {
 } from "@chakra-ui/react";
 import About from "./Tabs/About/About";
 import Setup from "./Tabs/Setup/Setup";
-import Visualize from "./Tabs/Visualize/Visualize";
 import React, { useState, createContext, useEffect, Suspense } from "react";
 import Papa from "papaparse";
 
 export const DataContext = createContext();
 
 function App() {
+  const Visualize = React.lazy(() => import("./Tabs/Visualize/Visualize"));
+
   const [isGraphVisible, setIsGraphVisible] = useState(false);
 
   const [tradesData, setTradesData] = useState();
@@ -129,37 +130,31 @@ function App() {
             setSliderValue,
           }}
         >
-          <Suspense fallback={<div>Loading...</div>}>
-            <Tabs colorScheme="orange" size="md" pt="1rem">
-              <TabList>
-                <Text
-                  fontSize="2xl"
-                  as="b"
-                  pl=".5rem"
-                  pr=".5rem"
-                  color="orange"
-                >
-                  TradeNet
-                </Text>
-                <Tab as="b">About</Tab>
-                <Tab as="b" onClick={() => setIsGraphVisible(false)}>
-                  Setup
-                </Tab>
-                <Tab as="b" onClick={() => setIsGraphVisible(true)}>
-                  Visualize
-                </Tab>
-              </TabList>
-              <TabPanels>
-                <TabPanel p={"2rem"}>
-                  <About />
-                </TabPanel>
-                <TabPanel p={"2rem"}>
-                  <Setup />
-                </TabPanel>
+          <Tabs colorScheme="orange" size="md" pt="1rem">
+            <TabList>
+              <Text fontSize="2xl" as="b" pl=".5rem" pr=".5rem" color="orange">
+                TradeNet
+              </Text>
+              <Tab as="b">About</Tab>
+              <Tab as="b" onClick={() => setIsGraphVisible(false)}>
+                Setup
+              </Tab>
+              <Tab as="b" onClick={() => setIsGraphVisible(true)}>
+                Visualize
+              </Tab>
+            </TabList>
+            <TabPanels>
+              <TabPanel p={"2rem"}>
+                <About />
+              </TabPanel>
+              <TabPanel p={"2rem"}>
+                <Setup />
+              </TabPanel>
+              <Suspense fallback={<div>Loading...</div>}>
                 <TabPanel p={0}>{isGraphVisible && <Visualize />}</TabPanel>
-              </TabPanels>
-            </Tabs>
-          </Suspense>
+              </Suspense>
+            </TabPanels>
+          </Tabs>
         </DataContext.Provider>
       </Box>
     </ChakraProvider>
