@@ -31,9 +31,9 @@ const About = () => {
           <Text fontSize="xl">
             Data source is from the amazing{"  "}
             <Link href="https://prosportstransactions.com/" isExternal>
-              prosportstransactions.com <ExternalLinkIcon mx="2px" />
+              prosportstransactions.com
+              <ExternalLinkIcon mx="2px" />
             </Link>{" "}
-            and is currently using data from 2021 as it is still in development.
           </Text>
         </GridItem>
         <GridItem>
@@ -43,17 +43,20 @@ const About = () => {
               href="https://svitkin.shinyapps.io/bball-trade-network/"
               isExternal
             >
-              project <ExternalLinkIcon mx="2px" />
+              project
+              <ExternalLinkIcon mx="2px" />
             </Link>
           </Text>
         </GridItem>
         <GridItem>
           <Link href="https://github.com/aaabuk02/trade-net" isExternal>
-            Source Code <ExternalLinkIcon mx="2px" />
+            Source Code
+            <ExternalLinkIcon mx="2px" />
           </Link>
           <br />
           <Link href="mailto:aaabuk02@gmail.com" isExternal>
-            Contact Me <EmailIcon mx="2px" />
+            Contact Me
+            <EmailIcon mx="2px" />
           </Link>
         </GridItem>
       </Grid>
