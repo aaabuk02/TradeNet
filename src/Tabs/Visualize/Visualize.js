@@ -107,33 +107,36 @@ const Visualize = () => {
 
       let layers = 0;
       while (queue.length > 0 && layers <= sliderValue) {
-        let currNode = queue.shift();
-        for (let i = 0; i < nodesData[currNode].length; i++) {
-          let index = nodesData[currNode][i];
-          let neighbor;
-          if (edgesData[index].From === currNode) {
-            neighbor = edgesData[index].To;
-          } else {
-            neighbor = edgesData[index].From;
-          }
-          if (!nodesVisited.has(neighbor)) {
-            nodesVisited.add(neighbor);
-            graph.push({
-              data: { id: neighbor, label: neighbor.split(" ").join("\n") },
-            });
-            queue.push(neighbor);
-          }
-          let currEdge = edgesData[index];
-          if (!edgesVisited.has(currEdge)) {
-            edgesVisited.add(currEdge);
-            graph.push({
-              data: {
-                source: currNode,
-                target: neighbor,
-                id: currEdge.Key,
-                label: "On " + currEdge.Date + ": " + currEdge.Label,
-              },
-            });
+        let currQueueLength = queue.length;
+        for (let j = 0; j < currQueueLength; j++) {
+          let currNode = queue.shift();
+          for (let i = 0; i < nodesData[currNode].length; i++) {
+            let index = nodesData[currNode][i];
+            let neighbor;
+            if (edgesData[index].From === currNode) {
+              neighbor = edgesData[index].To;
+            } else {
+              neighbor = edgesData[index].From;
+            }
+            if (!nodesVisited.has(neighbor)) {
+              nodesVisited.add(neighbor);
+              graph.push({
+                data: { id: neighbor, label: neighbor.split(" ").join("\n") },
+              });
+              queue.push(neighbor);
+            }
+            let currEdge = edgesData[index];
+            if (!edgesVisited.has(currEdge)) {
+              edgesVisited.add(currEdge);
+              graph.push({
+                data: {
+                  source: currNode,
+                  target: neighbor,
+                  id: currEdge.Key,
+                  label: "On " + currEdge.Date + ": " + currEdge.Label,
+                },
+              });
+            }
           }
         }
         layers += 1;
@@ -232,10 +235,10 @@ const Visualize = () => {
   }
 
   return (
-    <div>
-      <div ref={cytoRef} className="graph"></div>
+    <Box>
+      <Box ref={cytoRef} className="graph"></Box>
       <MyDrawer ref={drawerRef} />
-    </div>
+    </Box>
   );
 };
 
