@@ -1,5 +1,5 @@
-import { Heading, Text, Grid, GridItem, Link } from "@chakra-ui/react";
 import { ExternalLinkIcon, EmailIcon } from "@chakra-ui/icons";
+import { Grid, GridItem, Heading, Link, Text } from "@chakra-ui/react";
 
 const About = () => {
   return (

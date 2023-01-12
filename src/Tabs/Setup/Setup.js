@@ -1,16 +1,9 @@
-import {
-  Text,
-  Slider,
-  SliderTrack,
-  SliderFilledTrack,
-  SliderThumb,
-  Box,
-  Grid,
-  GridItem,
-} from "@chakra-ui/react";
+import { Box, Button, Grid, GridItem, Text } from "@chakra-ui/react";
 import { useContext, useRef } from "react";
-import { DataContext } from "../../App";
 import Select from "react-select";
+
+import { DataContext } from "../../App";
+
 import "./Setup.scss";
 
 const Setup = (props) => {
@@ -20,8 +13,8 @@ const Setup = (props) => {
     primaryChoice,
     setPrimaryChoice,
     setSecondaryChoice,
-    sliderValue,
-    setSliderValue,
+    exchangesValue,
+    setExchangesValue,
   } = useContext(DataContext);
 
   function getRelatedNodes(node) {
@@ -66,7 +59,7 @@ const Setup = (props) => {
   };
 
   return (
-    <Grid templateColumns="1fr" gap={6} maxWidth="35rem">
+    <Grid gap={6} maxWidth="25rem">
       <GridItem>
         <Text fontSize="2xl" as="b" color="orange">
           Show trades for:
@@ -90,21 +83,30 @@ const Setup = (props) => {
       </GridItem>
       <GridItem>
         <Text fontSize="2xl" as="b" color="orange">
-          Additional Exchanges: {sliderValue}
+          Additional Exchanges:
         </Text>
         <Box pt={6} pb={2}>
-          <Slider
-            defaultValue={0}
-            min={0}
-            max={5}
-            step={1}
-            onChange={(val) => setSliderValue(val)}
+          <Button
+            onClick={() => {
+              if (exchangesValue > 0) {
+                setExchangesValue(exchangesValue - 1);
+              }
+            }}
           >
-            <SliderTrack>
-              <SliderFilledTrack bg="orange" />
-            </SliderTrack>
-            <SliderThumb bg="orange" boxSize={6} />
-          </Slider>
+            {"-"}
+          </Button>
+          <Text fontSize="2xl" as="b" color="orange" pl="1rem" pr="1rem">
+            {exchangesValue}
+          </Text>
+          <Button
+            onClick={() => {
+              if (exchangesValue < 3) {
+                setExchangesValue(exchangesValue + 1);
+              }
+            }}
+          >
+            {"+"}
+          </Button>
         </Box>
       </GridItem>
     </Grid>

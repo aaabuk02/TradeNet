@@ -1,18 +1,19 @@
 import {
+  Box,
   ChakraProvider,
-  Text,
-  Tabs,
-  TabList,
+  Flex,
+  Spinner,
   Tab,
+  TabList,
   TabPanel,
   TabPanels,
-  Box,
-  Spinner,
-  Flex,
+  Tabs,
+  Text,
 } from "@chakra-ui/react";
-import About from "./Tabs/About/About";
-import React, { useState, createContext, useEffect, Suspense } from "react";
 import Papa from "papaparse";
+import React, { useState, createContext, useEffect, Suspense } from "react";
+
+import About from "./Tabs/About/About";
 
 export const DataContext = createContext();
 
@@ -37,7 +38,7 @@ function App() {
     value: { Name: "Anybody", Edges: "0" },
     label: "Anybody",
   });
-  const [sliderValue, setSliderValue] = useState(0);
+  const [exchangesValue, setExchangesValue] = useState(0);
 
   useEffect(() => {
     let response;
@@ -125,8 +126,8 @@ function App() {
             setPrimaryChoice,
             secondaryChoice,
             setSecondaryChoice,
-            sliderValue,
-            setSliderValue,
+            exchangesValue,
+            setExchangesValue,
           }}
         >
           <Tabs colorScheme="orange" size="md" pt="1rem">

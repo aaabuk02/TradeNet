@@ -1,15 +1,16 @@
 import React, { useEffect, useContext, useRef } from "react";
+
 import {
   Box,
   Drawer,
   DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
   DrawerHeader,
   DrawerOverlay,
-  DrawerContent,
-  DrawerCloseButton,
-  Text,
   List,
   ListItem,
+  Text,
   UnorderedList,
 } from "@chakra-ui/react";
 import "./Visualize.scss";
@@ -24,7 +25,7 @@ const Visualize = () => {
     tradesData,
     edgesData,
     nodesData,
-    sliderValue,
+    exchangesValue,
   } = useContext(DataContext);
 
   let tradeDetailsMap = new Map();
@@ -67,7 +68,7 @@ const Visualize = () => {
           name: "klay",
           fit: true,
           directed: false,
-          avoidOverlap: true,
+          avoidOverlap: false,
         },
       });
       cy.on("tap", "edge", (event) => {
@@ -106,7 +107,7 @@ const Visualize = () => {
       }
 
       let layers = 0;
-      while (queue.length > 0 && layers <= sliderValue) {
+      while (queue.length > 0 && layers <= exchangesValue) {
         let currQueueLength = queue.length;
         for (let j = 0; j < currQueueLength; j++) {
           let currNode = queue.shift();
