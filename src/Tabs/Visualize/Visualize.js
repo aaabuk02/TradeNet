@@ -89,6 +89,8 @@ const Visualize = () => {
       let queue = [];
       let nodesVisited = new Set();
       let edgesVisited = new Set();
+      let layers = 0;
+
       if (root.Name === "TradeNet") {
         return graph;
       }
@@ -101,15 +103,28 @@ const Visualize = () => {
         queue.push(neighbors.Name);
         nodesVisited.add(neighbors.Name);
         nodesVisited.add(root.Name);
+        let edgeIndex = nodesData[root.Name].filter((index) =>
+          nodesData[neighbors.Name].includes(index)
+        )[0];
+        let edge = edgesData[edgeIndex];
+        edgesVisited.add(edge);
+
         graph.push({
           data: {
             id: neighbors.Name,
             label: neighbors.Name.split(" ").join("\n"),
           },
         });
+        graph.push({
+          data: {
+            source: root.Name,
+            target: neighbors.Name,
+            id: edge.Key,
+          },
+        });
+        layers += 1;
       }
 
-      let layers = 0;
       while (queue.length > 0 && layers <= exchangesValue) {
         let currQueueLength = queue.length;
         for (let j = 0; j < currQueueLength; j++) {
@@ -137,7 +152,6 @@ const Visualize = () => {
                   source: currNode,
                   target: neighbor,
                   id: currEdge.Key,
-                  label: "On " + currEdge.Date + ": " + currEdge.Label,
                 },
               });
             }
