@@ -68,7 +68,10 @@ const Visualize = () => {
           name: "klay",
           fit: true,
           directed: false,
-          avoidOverlap: false,
+          avoidOverlap: true,
+          klay: {
+            direction: cytoRef.current.clientWidth < 500 ? "RIGHT" : "DOWN",
+          },
         },
       });
       cy.on("tap", "edge", (event) => {
