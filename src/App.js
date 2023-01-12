@@ -11,15 +11,16 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import About from "./Tabs/About/About";
-import Setup from "./Tabs/Setup/Setup";
 import React, { useState, createContext, useEffect, Suspense } from "react";
 import Papa from "papaparse";
 
 export const DataContext = createContext();
 
 function App() {
+  const Setup = React.lazy(() => import("./Tabs/Setup/Setup"));
   const Visualize = React.lazy(() => import("./Tabs/Visualize/Visualize"));
 
+  const [isGraphVisible, setIsGraphVisible] = useState(false);
   const [tradesData, setTradesData] = useState();
   const [edgesData, setEdgesData] = useState([
     { Name: "TradeNet", Edges: "0" },
@@ -134,10 +135,10 @@ function App() {
                 TradeNet
               </Text>
               <Tab as="b">About</Tab>
-              <Tab as="b">
+              <Tab as="b" onClick={() => setIsGraphVisible(false)}>
                 Setup
               </Tab>
-              <Tab as="b">
+              <Tab as="b" onClick={() => setIsGraphVisible(true)}>
                 Visualize
               </Tab>
             </TabList>
@@ -146,16 +147,32 @@ function App() {
                 <About />
               </TabPanel>
               <TabPanel p={"2rem"}>
-                <Setup />
+                <Suspense
+                  fallback={
+                    <Flex
+                      alignContent={"center"}
+                      justifyContent={"center"}
+                      m={"10rem"}
+                    >
+                      <Spinner color="orange.500" />
+                    </Flex>
+                  }
+                >
+                  <Setup />
+                </Suspense>
               </TabPanel>
               <Suspense
                 fallback={
-                  <Flex alignContent={"center"} justifyContent={"center"} m ={"10rem"}>
+                  <Flex
+                    alignContent={"center"}
+                    justifyContent={"center"}
+                    m={"10rem"}
+                  >
                     <Spinner color="orange.500" />
                   </Flex>
                 }
               >
-                <TabPanel p={0}>{<Visualize />}</TabPanel>
+                <TabPanel p={0}>{isGraphVisible && <Visualize />}</TabPanel>
               </Suspense>
             </TabPanels>
           </Tabs>
