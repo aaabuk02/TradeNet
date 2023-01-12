@@ -29,11 +29,12 @@ const About = () => {
         </GridItem>
         <GridItem>
           <Text fontSize="xl">
-            Data source is from the amazing{"  "}
+            {"Data source is from the amazing  "}
             <Link href="https://prosportstransactions.com/" isExternal>
               prosportstransactions.com
               <ExternalLinkIcon mx="2px" />
-            </Link>{" "}
+            </Link>
+            {" and is using data from 1977-01-01 to 2023-01-12"}
           </Text>
         </GridItem>
         <GridItem>
