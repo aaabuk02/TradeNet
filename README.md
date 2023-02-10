@@ -23,9 +23,7 @@ Deployed using Netlify at https://tradenet.netlify.app/
 
 ### 1. Install the dependencies:
 
-```bash
-yarn install
-```
+`yarn install`
 
 ### 2. Building the Application:
 

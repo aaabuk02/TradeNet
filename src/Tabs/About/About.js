@@ -34,7 +34,7 @@ const About = () => {
               prosportstransactions.com
               <ExternalLinkIcon mx="2px" />
             </Link>
-            {" and is using data from 1977-01-01 to 2023-01-12"}
+            {" and is using data from 1977-01-01 to 2023-02-10"}
           </Text>
         </GridItem>
         <GridItem>
